@@ -3,7 +3,6 @@ Standardized logging configuration for EIQ projects.
 """
 
 import logging
-import os
 import sys
 import traceback
 
@@ -151,7 +150,7 @@ def configure_root_logger(stream, log_format):
     root_logger.handlers = [handler]
 
 
-def configure(stream=sys.stderr, levels_env="LOG_LEVELS", format_env="LOG_FORMAT"):
+def configure(stream=sys.stderr, log_levels=None, log_format='json'):
     """
     Configure all logging.
 
@@ -162,9 +161,9 @@ def configure(stream=sys.stderr, levels_env="LOG_LEVELS", format_env="LOG_FORMAT
     # ensure that `warnings` module stuff will be logged
     logging.captureWarnings(True)
 
-    configure_root_logger(stream, os.getenv(format_env, "json"))
+    configure_root_logger(stream, log_format)
 
-    configure_log_levels(os.getenv(levels_env))
+    configure_log_levels(log_levels)
 
 
 class AtomicStreamHandler(logging.StreamHandler):
