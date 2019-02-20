@@ -5,9 +5,9 @@ import eiq_logging
 
 def test_parse_str_to_dict():
     expected = {"": "info", "example": "debug", "urllib3": "warning"}
-    var = "root:info;example:debug;urllib3:warning"
+    var = "root:info,example:debug,urllib3:warning"
     assert eiq_logging.parse_str(var) == expected
-    var = "info;example:debug;urllib3:warning"
+    var = "info,example:debug,urllib3:warning"
     assert eiq_logging.parse_str(var) == expected
 
 

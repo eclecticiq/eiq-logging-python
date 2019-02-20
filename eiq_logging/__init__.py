@@ -9,6 +9,7 @@ import traceback
 import structlog
 
 
+DELIMITER = ","
 DEFAULT_CONFIG = {
     "": logging.INFO,
     "requests": logging.WARNING,
@@ -25,7 +26,7 @@ def parse_str(var):
     a dictionary of {logger_name: log_level}.
     """
     loggers = {}
-    parts = var.split(";")
+    parts = var.split(DELIMITER)
     for part in parts:
         if ":" in part:
             logger, _, level = part.partition(":")
