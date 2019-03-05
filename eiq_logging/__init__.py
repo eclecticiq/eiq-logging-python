@@ -151,7 +151,7 @@ def configure_root_logger(stream, log_format):
     root_logger.handlers = [handler]
 
 
-def configure(stream=sys.stderr, log_levels=None, log_format='json'):
+def configure(stream=sys.stderr, log_levels=None, log_format="json"):
     """
     Configure all logging.
 
@@ -200,3 +200,14 @@ class AtomicStreamHandler(logging.StreamHandler):
             self.flush()
         except Exception:
             self.handleError(record)
+
+
+def get_gunicorn_logconfig_dict():
+    """
+    Get a dict to be used as ``logconfig_dict`` in a Gunicorn config file.
+    """
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "loggers": {"gunicorn.error": {"level": "NOTSET", "propagate": True}},
+    }
