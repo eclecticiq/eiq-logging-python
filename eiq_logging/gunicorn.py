@@ -9,9 +9,5 @@ follow our ``structlog`` configuration.
 import eiq_logging
 
 
-logconfig_dict = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "loggers": {"gunicorn.error": {"level": "NOTSET", "propagate": True}},
-}
+logconfig_dict = eiq_logging.get_gunicorn_logconfig_dict()
 eiq_logging.configure()
