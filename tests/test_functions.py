@@ -22,7 +22,7 @@ def test_get_loggers_dict_root_dict():
 
 
 def test_get_loggers_dict_specific_logger():
-    expected = eiq_logging.DEFAULT_CONFIG.copy()
+    expected = eiq_logging.DEFAULT_LEVELS.copy()
     expected['foo'] = 'info'
 
     loggers_dict = eiq_logging.get_loggers_dict('foo:info')

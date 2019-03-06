@@ -2,6 +2,7 @@
 Standardized logging configuration for EIQ projects.
 """
 
+import os
 import logging
 import sys
 import traceback
@@ -10,11 +11,13 @@ import structlog
 
 
 DELIMITER = ","
-DEFAULT_CONFIG = {
+DEFAULT_FORMAT = "json"
+DEFAULT_LEVELS = {
     "": logging.INFO,
     "requests": logging.WARNING,
     "urllib3": logging.WARNING,
 }
+ENV_PREFIX = "EIQ_"
 
 # if for whatever reason we switch away from structlog in the future?
 get_logger = structlog.get_logger
@@ -57,7 +60,7 @@ def get_loggers_dict(levels):
     Given a user input of log levels (string or dict), construct a complete
     dict of {logger_name: log_level}.
     """
-    loggers_dict = DEFAULT_CONFIG.copy()
+    loggers_dict = DEFAULT_LEVELS.copy()
     if levels:
         if isinstance(levels, str):
             levels = parse_str(levels)
@@ -151,13 +154,15 @@ def configure_root_logger(stream, log_format):
     root_logger.handlers = [handler]
 
 
-def configure(stream=sys.stderr, log_levels=None, log_format="json"):
+def configure(stream=sys.stderr, log_levels=None, log_format=None):
     """
     Configure all logging.
-
-    Arguments specify which environment variables will be checked for the log
-    level and logging format.
     """
+
+    if log_levels is None:
+        log_levels = os.getenv(ENV_PREFIX + "LOG_LEVELS")
+    if log_format is None:
+        log_format = os.getenv(ENV_PREFIX + "LOG_FORMAT", DEFAULT_FORMAT)
 
     # ensure that `warnings` module stuff will be logged
     logging.captureWarnings(True)
