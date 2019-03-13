@@ -9,7 +9,8 @@ python:
   - "3.7"
 
 install:
-  - make .venv VENV_PYTHON=$TRAVIS_PYTHON_VERSION
+  - make --always-make $VIRTUAL_ENV VENV_PYTHON=python$TRAVIS_PYTHON_VERSION
 
 script:
-  - make lint test
+  - make lint
+  - make test

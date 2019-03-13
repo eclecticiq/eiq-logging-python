@@ -1,4 +1,4 @@
-VENV_PATH ?= .venv
+VIRTUAL_ENV ?= .venv
 VENV_PYTHON ?= python3.6
 BUILD_ID ?= latest
 TEST_IMAGE = localhost/neo4jbatcher-test:$(BUILD_ID)
@@ -8,21 +8,21 @@ default: lint test
 
 
 # running stuff locally in a venv
-$(VENV_PATH):
-	$(VENV_PYTHON) -m venv $(VENV_PATH)
-	$(VENV_PATH)/bin/pip install -r requirements-dev.txt
+$(VIRTUAL_ENV):
+	$(VENV_PYTHON) -m venv $(VIRTUAL_ENV)
+	$(VIRTUAL_ENV)/bin/pip install -r requirements-dev.txt
 
-lint: $(VENV_PATH)
-	$(VENV_PATH)/bin/flake8
+lint: $(VIRTUAL_ENV)
+	$(VIRTUAL_ENV)/bin/flake8
 
-test: $(VENV_PATH)
-	$(VENV_PATH)/bin/pytest -v
+test: $(VIRTUAL_ENV)
+	$(VIRTUAL_ENV)/bin/pytest -v
 
-dist: $(VENV_PATH)
-	$(VENV_PATH)/bin/python setup.py sdist bdist_wheel
+dist: $(VIRTUAL_ENV)
+	$(VIRTUAL_ENV)/bin/python setup.py sdist bdist_wheel
 
 publish: dist
-	$(VENV_PATH)/bin/twine upload dist/*
+	$(VIRTUAL_ENV)/bin/twine upload dist/*
 
 
 # running tests in docker

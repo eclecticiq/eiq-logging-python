@@ -3,4 +3,4 @@ WORKDIR /app
 RUN python3 -m venv /venv && /venv/bin/pip install --upgrade pip setuptools
 COPY . .
 RUN /venv/bin/pip install -r requirements-dev.txt
-CMD make lint test VENV_PATH=/venv
+CMD make lint test VIRTUAL_ENV=/venv
