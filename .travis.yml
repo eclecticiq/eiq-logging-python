@@ -1,0 +1,15 @@
+branches:
+  - master
+
+language: python
+dist: xenial
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
+install:
+  - make .venv VENV_PYTHON=$TRAVIS_PYTHON_VERSION
+
+script:
+  - make lint test

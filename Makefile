@@ -1,4 +1,5 @@
 VENV_PATH ?= .venv
+VENV_PYTHON ?= python3.6
 BUILD_ID ?= latest
 TEST_IMAGE = localhost/neo4jbatcher-test:$(BUILD_ID)
 TEST_CONTAINER = tmp-neo4jbatcher-test-$(BUILD_ID)
@@ -8,7 +9,7 @@ default: lint test
 
 # running stuff locally in a venv
 $(VENV_PATH):
-	python3.6 -m venv $(VENV_PATH)
+	$(VENV_PYTHON) -m venv $(VENV_PATH)
 	$(VENV_PATH)/bin/pip install -r requirements-dev.txt
 
 lint: $(VENV_PATH)
