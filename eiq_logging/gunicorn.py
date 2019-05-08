@@ -5,9 +5,8 @@ The desired effect is to remove ``gunicorn.error`` logger's stream
 handler and restore propagation to the root logger, which should
 follow our ``structlog`` configuration.
 """
+from .helpers import configure, get_gunicorn_logconfig_dict
 
-import eiq_logging
 
-
-logconfig_dict = eiq_logging.get_gunicorn_logconfig_dict()
-eiq_logging.configure()
+logconfig_dict = get_gunicorn_logconfig_dict()
+configure()
