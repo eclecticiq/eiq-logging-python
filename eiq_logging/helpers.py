@@ -1,12 +1,12 @@
 import os
 import logging
 import sys
-import traceback
 
 import structlog
 
 from .constants import DEFAULT_FORMAT, DEFAULT_LEVELS, DELIMITER, ENV_PREFIX
 from .handlers import AtomicStreamHandler
+from .renderers import render_plaintext, render_json
 
 
 def parse_str(var):
@@ -70,28 +70,6 @@ def configure_log_levels(levels):
         logging.getLogger(logger).setLevel(level)
 
 
-def render_log_in_plaintext(logger, level, event):
-    """
-    Render a structlog event in plaintext.
-    """
-    event = event.copy()  # prevent mutation of dict from caller side
-    ret = "{timestamp} [{level:7}] [{logger}] {event}".format(
-        timestamp=event.pop("timestamp"),
-        logger=event.pop("logger", logger.name if logger else "UNKNOWN"),
-        level=event.pop("level", level).upper(),
-        event=event.pop("event"),
-    )
-    exc_info = event.pop("exc_info", None)
-    # format any leftover key-value pairs
-    if event:
-        kv_pairs = ", ".join("%s=%s" % (k, v) for k, v in event.items())
-        ret += " [%s]" % kv_pairs
-    if exc_info:
-        ret += "\n"
-        ret += "".join(traceback.format_exception(*exc_info)).strip("\n")
-    return ret
-
-
 def configure_root_logger(stream, log_format):
     """
     Configure the root logger.
@@ -105,9 +83,9 @@ def configure_root_logger(stream, log_format):
     ]
 
     if log_format == "plain":
-        renderer = render_log_in_plaintext
+        renderer = render_plaintext
     elif log_format == "json":
-        renderer = structlog.processors.JSONRenderer(sort_keys=True)
+        renderer = render_json
     else:
         raise ValueError("unknown log_format: %r" % log_format)
 

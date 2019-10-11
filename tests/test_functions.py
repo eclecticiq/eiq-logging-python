@@ -3,7 +3,7 @@ import sys
 from eiq_logging.constants import DEFAULT_LEVELS
 from eiq_logging.helpers import (
     parse_str, get_loggers_dict,
-    sort_loggers, render_log_in_plaintext)
+    sort_loggers, render_plaintext)
 
 
 def test_parse_str_to_dict():
@@ -48,7 +48,7 @@ def test_plaintext_logger():
         "level": "info",
         "event": "test-event",
     }
-    ret = render_log_in_plaintext(None, None, event)
+    ret = render_plaintext(None, None, event)
     assert ret == "2018-08-16T08:50:55.711270Z [INFO   ] [test] test-event"
 
     event = {
@@ -58,7 +58,7 @@ def test_plaintext_logger():
         "event": "test-event",
         "extra": "foo",
     }
-    ret = render_log_in_plaintext(None, None, event)
+    ret = render_plaintext(None, None, event)
     assert ret == (
         "2018-08-16T08:50:55.711270Z [WARNING] [test] test-event" " [extra=foo]"
     )
@@ -74,7 +74,7 @@ def test_plaintext_logger():
         "event": "err",
         "exc_info": exc_info,
     }
-    line = render_log_in_plaintext(None, None, event).split("\n")
+    line = render_plaintext(None, None, event).split("\n")
     assert line[0] == "2018-08-16T08:50:55.711270Z [ERROR  ] [test] err"
     assert line[1] == "Traceback (most recent call last):"
     assert line[-2] == '    raise Exception("test")'
